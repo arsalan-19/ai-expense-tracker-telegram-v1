@@ -1,98 +1,103 @@
 # 🤖 Voice-Based Expense Tracker (Telegram + AI)
 
-**Voice-first expense tracker designed to build better money habits with minimal effort and near-zero cost.**
+**A simple system designed to make expense tracking effortless — so better money habits actually stick, without adding cost or complexity.**
 
 ---
 
-## Why I Built This
+## 🧭 Problem
 
-I’ve tried tracking my expenses multiple times — and failed every time.
+I repeatedly failed at tracking my expenses — not because tools were lacking, but because the habit didn’t stick.
 
-Not because the apps were bad, but because the habit didn’t stick.
+The pattern was consistent:
 
-The pattern was simple:
+* Logging required effort
+* I postponed it
+* Then stopped entirely
 
-* I’d spend money
-* Tell myself I’ll log it later
-* Forget
-* Stop tracking within a few days
-
-So the real problem wasn’t features. It was friction.
-
-> Logging an expense always felt like extra work.
+> The real problem wasn’t features. It was friction.
 
 ---
 
-## The Idea
+## 💡 Insight
 
-What if logging an expense took almost no effort?
+If logging an expense takes even a few extra steps, most people won’t do it consistently.
 
-Instead of opening an app and typing, I should just be able to say:
+So instead of improving the interface, I focused on removing the need for one.
+
+---
+
+## 🎯 Solution
+
+A voice-first system where users can simply say:
 
 > “Spent 450 on dinner using credit card”
 
-And it should get logged automatically.
+And it automatically:
+
+* Converts speech → text
+* Extracts structured data
+* Logs it into Google Sheets
+* Sends a confirmation
+
+All in real time.
 
 ---
 
-## What This Does
+## 🏗 How It Works
 
-This system lets you:
-
-* 🎤 Send a voice message on Telegram
-* 🧠 Convert it into structured data using AI
-* 📊 Store it in Google Sheets
-* ✅ Get instant confirmation
-
-No typing. No switching apps. Just speak and move on.
-
----
-
-## How It Works
-
-```id="flow1"
-Voice → Telegram Bot → Speech-to-Text → AI Parsing → Google Sheets → Confirmation Message
+```id="flow"
+Voice → Telegram Bot → Speech-to-Text → AI Parsing → Google Sheets → Confirmation
 ```
 
 ---
 
-## What I Focused On
+## ⚙️ Product Decisions & Trade-offs
 
-### 1. Remove Friction
+### Voice over UI
 
-No app to open. No forms to fill. No manual categorisation.
-
----
-
-### 2. Real-Time Feedback
-
-Every entry sends a confirmation message — builds trust and reinforces the habit.
+* Less precision, but significantly higher adoption
+  → Chose usage over control
 
 ---
 
-### 3. Multi-User Support
+### Google Sheets as Backend
 
-Each entry is tagged with the user, so multiple people can use the same bot.
-
----
-
-### 4. Reliability
-
-If something fails:
-
-* User gets a retry message
-* System continues running
-* Future inputs are not blocked
+* Not scalable, but fast to build and transparent
+  → Chose speed and accessibility for V1
 
 ---
 
-## Example
+### AI Parsing vs Rule-Based Logic
+
+* Slight unpredictability, but handles real language better
+  → Chose flexibility over rigidity
+
+---
+
+### Resume on Error
+
+* May skip failed entries, but system never blocks
+  → Chose reliability over strict correctness
+
+---
+
+## 🔑 Key Capabilities
+
+* 🎤 **Frictionless input** — no typing or app switching
+* ⚡ **Real-time logging** — captured at the moment of spend
+* 👥 **Multi-user support** — tracks user identity
+* ⚠️ **Fault-tolerant flow** — system continues even on errors
+* 🔁 **Instant feedback loop** — confirmation reinforces habit
+
+---
+
+## 📊 Example
 
 Input:
 
 > “Spent 850 on groceries using UPI”
 
-Stored in Google Sheets:
+Output:
 
 | Date   | User    | Amount | Category  | Description | Payment Mode |
 | ------ | ------- | ------ | --------- | ----------- | ------------ |
@@ -100,54 +105,36 @@ Stored in Google Sheets:
 
 Telegram reply:
 
-```id="msg1"
+```id="msg"
 ✅ Expense Added
 
 ₹850 | Groceries  
 UPI  
 25 Apr, 7:45 PM
 ```
+<img width="318" height="188" alt="image" src="https://github.com/user-attachments/assets/dd59b977-7834-46d2-a720-d92e96e2c6cf" />
+
+
 
 ---
 
-## Key Decisions (and Trade-offs)
+## 📈 What Changed (Outcome)
 
-* **Voice over UI**
-  Less control, but much higher adoption
-
-* **Google Sheets as backend**
-  Not scalable, but fast and simple for V1
-
-* **AI parsing instead of rules**
-  Flexible, but slightly imperfect
-
-* **Resume on error**
-  System continues instead of breaking
+* Reduced friction → increased consistency
+* Logging shifted from “later” → “instant”
+* Improved visibility into spending behaviour
 
 ---
 
-## What I Learned
-
-* Friction kills habits more than lack of features
-* AI is useful when it removes effort
-* Error handling is critical, not optional
-* Small feedback loops (like confirmations) matter a lot
-
----
-
-## 🚀 Getting Started (Setup in ~10–15 minutes)
+## 🚀 Getting Started (10–15 mins)
 
 ### 1. Create Telegram Bot
 
-* Open Telegram → search **@BotFather**
-* Run `/newbot`
-* Copy your **Bot Token**
+Use @BotFather → `/newbot` → copy token
 
 ---
 
 ### 2. Create Google Sheet
-
-Create a sheet with columns:
 
 ```id="cols"
 Date | User | Amount | Category | Description | Payment Mode
@@ -155,109 +142,79 @@ Date | User | Amount | Category | Description | Payment Mode
 
 ---
 
-### 3. Create Make.com Scenario
+### 3. Build Make.com Scenario
 
-Add these modules in order:
-
-1. Telegram Bot → Watch Updates (Webhook)
-2. Telegram Bot → Download a File
-3. OpenAI → Transcription (Whisper)
+1. Telegram → Watch Updates
+2. Telegram → Download File
+3. OpenAI → Transcription
 4. OpenAI → Chat Completion
-5. JSON → Parse JSON
+5. JSON → Parse
 6. Google Sheets → Add Row
-7. Telegram Bot → Send Confirmation
+7. Telegram → Send Message
 
 ---
 
 ### 4. Add API Keys
 
-* Telegram Bot Token
-* OpenAI API Key
-* Google account (for Sheets)
+* Telegram
+* OpenAI
+* Google
 
 ---
 
-### 5. Turn Scenario ON
-
-Send a voice message like:
+### 5. Turn ON & Test
 
 > “Spent 500 on groceries using UPI”
 
 ---
 
-### 6. Done
-
-* Entry is logged
-* Confirmation is sent
-* System runs automatically
-
----
-
 ## ⚠️ Error Handling
 
-If something goes wrong:
-
-* You receive a message:
-
-  ```
-  ❌ Error processing your expense
-  Please try again
-  ```
-* System continues running
-* No future messages are blocked
+* Failures trigger a retry message
+* Scenario continues running
+* No blocking for future inputs
 
 ---
 
-## 💡 Tips for Best Results
+## 🧠 What I Learned
 
-* Speak clearly
-* Mention amount + category
-* Example:
-
-  > “Spent 1200 on travel using credit card”
-
----
-
-## 📉 Current Limitations
-
-* Depends on OpenAI API
-* No dashboard yet
-* Category detection may not always be perfect
+* Reducing friction is often more valuable than adding features
+* AI is most useful when it simplifies user behaviour
+* Reliability (handling failure) is core product design
+* Small feedback loops improve habit formation
 
 ---
 
-## 🚀 What I’d Build Next
+## 🔭 What’s Next
 
 * Monthly summaries
 * Budget alerts
 * Card-wise tracking
-* Simple analytics dashboard
+* Simple analytics layer
 
 ---
 
 ## 🧰 Tech Stack
 
-* Make.com (automation)
+* Make.com
 * Telegram Bot
-* OpenAI (speech + parsing)
+* OpenAI
 * Google Sheets
 
 ---
 
-## Why This Project Matters
+## 🧪 Why This Matters
 
-This isn’t just an automation.
+This project focuses on a simple question:
 
-It’s an attempt to solve a behavioural problem:
+> How do you design a system people actually continue using?
 
-> “How do you make expense tracking something people actually stick to?”
-
-Instead of adding features, I focused on removing effort.
+Instead of adding features, I focused on removing effort — and that changed how the product behaves.
 
 ---
 
-## Author
+## 👤 Author
 
-Built as a personal system to improve financial discipline using simple AI and automation.
+Built to improve my own financial discipline and explore how AI can simplify everyday workflows.
 
 ---
