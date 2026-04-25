@@ -138,6 +138,9 @@ Stored as:
 | ------ | ------- | ------ | -------- | ----------- | ------------ |
 | 25 Apr | Arsalan | 1200   | Travel   | Travel      | UPI          |
 
+<img width="318" height="188" alt="image" src="https://github.com/user-attachments/assets/fc29ee20-a789-4913-9935-2861e3abc794" />
+
+
 ---
 
 ## Key Decisions (and Trade-offs)
