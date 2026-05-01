@@ -209,7 +209,7 @@ This project focuses on a simple question:
 
 > How do you design a system people actually continue using?
 
-Instead of adding features, I focused on removing effort — and that changed how the product behaves.
+Instead of adding features, I focused on removing effort — and that changed how the product behaves
 
 ---
 
